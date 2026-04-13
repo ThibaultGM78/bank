@@ -1,11 +1,11 @@
 package bank.adapter.in.web.helper;
 
 import bank.adapter.in.web.dto.CompteDTO;
-import bank.adapter.in.web.dto.VirementDTO;
+import bank.adapter.in.web.dto.OperationDTO;
 import bank.adapter.in.web.dto.compte.DetailsCompteCourantDTO;
 import bank.adapter.in.web.dto.compte.DetailsLivretDTO;
 import bank.application.domain.Compte;
-import bank.application.domain.Virement;
+import bank.application.domain.Operation;
 import bank.application.domain.compte.CompteCourant;
 import bank.application.domain.compte.Livret;
 import lombok.NonNull;
@@ -13,17 +13,6 @@ import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class BankHelper {
-
-    @NonNull
-    public Virement from(@NonNull VirementDTO virementDTO){
-        return Virement.builder()
-                .numeroCompteEmetteur(virementDTO.getNumeroCompteEmetteur())
-                .numeroCompteRecepteur(virementDTO.getNumeroCompteRecepteur())
-                .montant(virementDTO.getMontant())
-                .libelle(virementDTO.getLibelle())
-                .date(virementDTO.getDate())
-                .build();
-    }
 
     @NonNull
     public CompteDTO toDTO(@NonNull Compte compte) {
@@ -44,4 +33,26 @@ public class BankHelper {
 
         return builder.build();
     }
+
+    @NonNull
+    public static OperationDTO toDTO(Operation operation) {
+        return OperationDTO.builder()
+                .numeroCompte(operation.numeroCompte())
+                .type(operation.type())
+                .montant(operation.montant())
+                .date(operation.date())
+                .soldeApres(operation.soldeApres())
+                .libelle(operation.libelle())
+                .build();
+    }
+
+    @NonNull
+    public static Operation toDomain(OperationDTO dto) {
+        return Operation.builder()
+                .numeroCompte(dto.getNumeroCompte())
+                .montant(dto.getMontant())
+                .libelle(dto.getLibelle())
+                .build();
+    }
+
 }

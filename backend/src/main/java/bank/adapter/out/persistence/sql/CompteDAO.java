@@ -1,8 +1,5 @@
 package bank.adapter.out.persistence.sql;
 
-import bank.adapter.in.web.dto.CompteDTO;
-import bank.adapter.in.web.dto.compte.DetailsCompteCourantDTO;
-import bank.adapter.in.web.dto.compte.DetailsLivretDTO;
 import bank.application.dao.ICompteDAO;
 import bank.application.domain.Compte;
 import bank.application.domain.compte.CompteCourant;
@@ -15,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import java.math.BigDecimal;
 
 import static bank.adapter.out.persistence.sql.helper.SQLQueries.GET_COMPTE_SQL;
+import static bank.adapter.out.persistence.sql.helper.SQLQueries.SOLDE_UPDATE_SQL;
 import static java.util.Objects.requireNonNull;
 
 @Repository
@@ -63,7 +61,15 @@ public class CompteDAO implements ICompteDAO {
         }
     }
 
-    public void sauvegarder(Compte compte) {
+    public void updateSolde(Compte compte) {
+        int rowsAffected = jdbcTemplate.update(SOLDE_UPDATE_SQL,
+                compte.getSolde(),
+                compte.getNumeroCompte()
+        );
 
+        if (rowsAffected == 0) {
+            throw new RuntimeException("Échec de la mise à jour : le compte n'existe pas.");
+        }
     }
+
 }

@@ -7,4 +7,35 @@ public class SQLQueries {
             FROM BANK_COMPTE
             WHERE id_compte = ?
             """;
+
+    public static final String TRANSACTION_INSERT_SQL = """
+    INSERT INTO BANK_OPERATION (
+        id_compte,
+        operation_type,
+        operation_montant,
+        operation_date,
+        operation_solde_apres,
+        operation_libelle
+    ) VALUES (?, ?, ?, ?, ?, ?)
+    """;
+
+    public static final String SOLDE_UPDATE_SQL = """
+    UPDATE BANK_COMPTE
+    SET compte_solde = ?
+    WHERE id_compte = ?
+    """;
+
+    public static final String GET_OPERATIONS_SQL = """
+    SELECT
+        id_operation,
+        id_compte,
+        operation_type,
+        operation_montant,
+        operation_date,
+        operation_solde_apres,
+        operation_libelle
+    FROM BANK_OPERATION
+    WHERE id_compte = ?
+    ORDER BY operation_date DESC
+    """;
 }

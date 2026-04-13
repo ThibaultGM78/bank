@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS BANK_VIREMENT;
+DROP TABLE IF EXISTS BANK_OPERATION;
 DROP TABLE IF EXISTS BANK_COMPTE;
 
 CREATE TABLE BANK_COMPTE (
@@ -10,15 +10,18 @@ CREATE TABLE BANK_COMPTE (
     compte_plafond DECIMAL(15, 2) DEFAULT NULL
 );
 
-CREATE TABLE BANK_VIREMENT (
-    id_virement INT AUTO_INCREMENT PRIMARY KEY,
-    id_compte_emetteur VARCHAR(50) NOT NULL,
-    id_compte_recepteur VARCHAR(50) NOT NULL,
-    virement_montant DECIMAL(15, 2) NOT NULL,
-    virement_libelle VARCHAR(255),
-    virement_date DATE NOT NULL,
-    CONSTRAINT fk_emetteur FOREIGN KEY (id_compte_emetteur) REFERENCES BANK_COMPTE(id_compte),
-    CONSTRAINT fk_recepteur FOREIGN KEY (id_compte_recepteur) REFERENCES BANK_COMPTE(id_compte)
+CREATE TABLE BANK_OPERATION (
+    id_operation BIGINT AUTO_INCREMENT PRIMARY KEY,
+    id_compte VARCHAR(50) NOT NULL,
+    operation_type VARCHAR(20) NOT NULL,
+    operation_montant DECIMAL(15, 2) NOT NULL,
+    operation_date TIMESTAMP NOT NULL,
+    operation_solde_apres DECIMAL(15, 2) NOT NULL, 
+    
+    id_compte_distant VARCHAR(50), 
+    
+    operation_libelle VARCHAR(255),
+    CONSTRAINT fk_compte FOREIGN KEY (id_compte) REFERENCES BANK_COMPTE(id_compte)
 );
 
 INSERT INTO BANK_COMPTE (id_compte, compte_type, compte_solde, compte_decouvert_autorise, compte_montant_decouvert) 
@@ -31,5 +34,6 @@ VALUES
 ('LA-ALICE-003', 'LIVRET', 15000.00, 22950.00),
 ('LA-PICSOU-004', 'LIVRET', 22950.00, 22950.00);
 
-INSERT INTO BANK_VIREMENT (id_compte_emetteur, id_compte_recepteur, virement_montant, virement_libelle, virement_date)
-VALUES ('CC-JACK-001', 'LA-ALICE-003', 100.00, 'Cadeau anniversaire', CURDATE());
+INSERT INTO BANK_OPERATION (id_operation, id_compte, operation_type, operation_montant, operation_date, operation_solde_apres, operation_libelle) 
+VALUES 
+(1, 'CC-JACK-001', 'DEPOT', 500.00, CURRENT_TIMESTAMP, 3000.00, 'Dépôt espèces agence');

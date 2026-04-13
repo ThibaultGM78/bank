@@ -1,6 +1,5 @@
 package bank.application.usecase.impl;
 
-import bank.adapter.in.web.dto.CompteDTO;
 import bank.application.dao.ICompteDAO;
 import bank.application.domain.Compte;
 import bank.application.usecase.IGetCompteUseCase;

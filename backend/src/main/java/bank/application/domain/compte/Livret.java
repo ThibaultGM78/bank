@@ -21,7 +21,6 @@ public class Livret extends Compte {
         this.plafond = plafond;
     }
 
-    @Override
     public void retirer(BigDecimal montant) {
         if (montant.compareTo(BigDecimal.ZERO) <= 0) {
             throw new IllegalArgumentException("Le montant du retrait doit être positif");
@@ -34,7 +33,6 @@ public class Livret extends Compte {
         this.setSolde(this.getSolde().subtract(montant));
     }
 
-    @Override
     public void deposer(BigDecimal montant) {
         if (montant.compareTo(BigDecimal.ZERO) <= 0) {
             throw new IllegalArgumentException("Le montant du dépôt doit être positif");

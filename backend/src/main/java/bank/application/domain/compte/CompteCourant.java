@@ -25,7 +25,6 @@ public class CompteCourant extends Compte {
         this.montantDecouvert = montantDecouvert;
     }
 
-    @Override
     public void retirer(BigDecimal montant) {
         if (montant.compareTo(BigDecimal.ZERO) <= 0) {
             throw new IllegalArgumentException("Le montant du retrait doit être positif");
@@ -44,7 +43,6 @@ public class CompteCourant extends Compte {
         this.setSolde(nouveauSolde);
     }
 
-    @Override
     public void deposer(BigDecimal montant) {
         if (montant.compareTo(BigDecimal.ZERO) <= 0) {
             throw new IllegalArgumentException("Le montant du dépôt doit être positif");
