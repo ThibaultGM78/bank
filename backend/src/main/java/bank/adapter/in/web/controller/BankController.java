@@ -19,6 +19,10 @@ import java.util.List;
 @RequestMapping("/bank")
 public class BankController {
 
+    public static final String ERR_UNEXPECTED = "Une erreur inattendue est survenue";
+    public static final String ERR_DEPOT_PREFIX = "Erreur lors du dépôt : ";
+    public static final String ERR_RETRAIT_PREFIX = "Erreur lors du retrait : ";
+
     private final IGetCompteUseCase getCompteUseCase;
     private final IDepotUseCase depotUseCase;
     private final IRetraitUseCase retraitUseCase;
@@ -37,7 +41,7 @@ public class BankController {
             return ResponseEntity.status(404).body(new ErrorResponse(404, e.getMessage()));
 
         } catch (Exception e) {
-            return ResponseEntity.status(500).body(new ErrorResponse(500, "Une erreur inattendue est survenue"));
+            return ResponseEntity.status(500).body(new ErrorResponse(500, ERR_UNEXPECTED));
         }
     }
 
@@ -53,7 +57,7 @@ public class BankController {
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(400).body(new ErrorResponse(400, e.getMessage()));
         } catch (Exception e) {
-            return ResponseEntity.status(500).body(new ErrorResponse(500, "Erreur lors du dépôt : " + e.getMessage()));
+            return ResponseEntity.status(500).body(new ErrorResponse(500,  ERR_DEPOT_PREFIX + e.getMessage()));
         }
     }
 
@@ -69,7 +73,7 @@ public class BankController {
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(400).body(new ErrorResponse(400, e.getMessage()));
         } catch (Exception e) {
-            return ResponseEntity.status(500).body(new ErrorResponse(500, "Erreur lors du retrait : " + e.getMessage()));
+            return ResponseEntity.status(500).body(new ErrorResponse(500, ERR_RETRAIT_PREFIX + e.getMessage()));
         }
     }
 
@@ -86,7 +90,7 @@ public class BankController {
             return ResponseEntity.status(404).body(new ErrorResponse(404, e.getMessage()));
 
         } catch (Exception e) {
-            return ResponseEntity.status(500).body(new ErrorResponse(500, "Une erreur inattendue est survenue"));
+            return ResponseEntity.status(500).body(new ErrorResponse(500, ERR_UNEXPECTED));
         }
     }
 }

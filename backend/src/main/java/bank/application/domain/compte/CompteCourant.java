@@ -8,6 +8,8 @@ import java.math.BigDecimal;
 
 public class CompteCourant extends Compte {
 
+    public static final String ERR_SOLDE_INSUFFISANT = "Retrait refusé : solde insuffisant (limite de découvert atteinte)";
+
     @Getter
     boolean decouvertAutorise;
     @Getter
@@ -27,7 +29,7 @@ public class CompteCourant extends Compte {
 
     public void retirer(BigDecimal montant) {
         if (montant.compareTo(BigDecimal.ZERO) <= 0) {
-            throw new IllegalArgumentException("Le montant du retrait doit être positif");
+            throw new IllegalArgumentException(ERR_MONTANT_POSITIF_RETRAIT);
         }
 
         BigDecimal soldeMinimum = decouvertAutorise
@@ -37,7 +39,7 @@ public class CompteCourant extends Compte {
         BigDecimal nouveauSolde = this.getSolde().subtract(montant);
 
         if (nouveauSolde.compareTo(soldeMinimum) < 0) {
-            throw new IllegalStateException("Retrait refusé : solde insuffisant (limite de découvert atteinte)");
+            throw new IllegalStateException(ERR_SOLDE_INSUFFISANT);
         }
 
         this.setSolde(nouveauSolde);
@@ -45,7 +47,7 @@ public class CompteCourant extends Compte {
 
     public void deposer(BigDecimal montant) {
         if (montant.compareTo(BigDecimal.ZERO) <= 0) {
-            throw new IllegalArgumentException("Le montant du dépôt doit être positif");
+            throw new IllegalArgumentException(ERR_MONTANT_POSITIF_DEPOT);
         }
 
         this.setSolde(this.getSolde().add(montant));

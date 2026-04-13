@@ -18,16 +18,20 @@ public record Operation(
         LocalDateTime date
 ) {
 
+    public static final String ERR_NUMERO_OBLIGATOIRE = "Le numéro de compte est obligatoire";
+    public static final String ERR_MONTANT_OBLIGATOIRE = "Le montant est obligatoire";
+    public static final String ERR_MONTANT_STRICT_POSITIF = "Le montant de l'opération doit être strictement positif";
+
     public Operation {
-        Objects.requireNonNull(numeroCompte, "Le numéro de compte est obligatoire");
-        Objects.requireNonNull(montant, "Le montant est obligatoire");
+        Objects.requireNonNull(numeroCompte, ERR_NUMERO_OBLIGATOIRE);
+        Objects.requireNonNull(montant, ERR_MONTANT_OBLIGATOIRE);
 
         if (date == null) {
             date = LocalDateTime.now();
         }
 
         if (montant.compareTo(BigDecimal.ZERO) <= 0) {
-            throw new IllegalArgumentException("Le montant de l'opération doit être strictement positif");
+            throw new IllegalArgumentException(ERR_MONTANT_STRICT_POSITIF);
         }
     }
 }

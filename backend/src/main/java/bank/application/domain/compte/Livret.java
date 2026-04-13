@@ -8,6 +8,9 @@ import java.math.BigDecimal;
 
 public class Livret extends Compte {
 
+    public static final String ERR_SOLDE_INSUFFISANT = "Retrait refusé : solde insuffisant";
+    public static final String ERR_PLAFOND_DEPASSE = "Dépôt refusé : le plafond suivant serait dépassé : ";
+
     @Getter
     BigDecimal plafond;
 
@@ -23,11 +26,11 @@ public class Livret extends Compte {
 
     public void retirer(BigDecimal montant) {
         if (montant.compareTo(BigDecimal.ZERO) <= 0) {
-            throw new IllegalArgumentException("Le montant du retrait doit être positif");
+            throw new IllegalArgumentException(ERR_MONTANT_POSITIF_RETRAIT);
         }
 
         if (montant.compareTo(this.getSolde()) > 0) {
-            throw new IllegalStateException("Retrait refusé : solde insuffisant");
+            throw new IllegalStateException(ERR_SOLDE_INSUFFISANT);
         }
 
         this.setSolde(this.getSolde().subtract(montant));
@@ -35,12 +38,12 @@ public class Livret extends Compte {
 
     public void deposer(BigDecimal montant) {
         if (montant.compareTo(BigDecimal.ZERO) <= 0) {
-            throw new IllegalArgumentException("Le montant du dépôt doit être positif");
+            throw new IllegalArgumentException(ERR_MONTANT_POSITIF_DEPOT);
         }
 
         BigDecimal nouveauSolde = this.getSolde().add(montant);
         if (nouveauSolde.compareTo(plafond) > 0) {
-            throw new IllegalStateException("Dépôt refusé : le plafond de " + plafond + " serait dépassé");
+            throw new IllegalStateException(ERR_PLAFOND_DEPASSE + plafond);
         }
 
         this.setSolde(nouveauSolde);
