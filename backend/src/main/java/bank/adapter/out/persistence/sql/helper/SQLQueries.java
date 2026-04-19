@@ -35,7 +35,7 @@ public class SQLQueries {
         operation_solde_apres,
         operation_libelle
     FROM BANK_OPERATION
-    WHERE id_compte = ?
+    WHERE id_compte = ? AND operation_date >= DATE_SUB(NOW(), INTERVAL 1 MONTH)
     ORDER BY operation_date DESC
     """;
 }

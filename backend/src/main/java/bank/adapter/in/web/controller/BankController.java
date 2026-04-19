@@ -17,6 +17,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/bank")
+@CrossOrigin("http://localhost:4200")
 public class BankController {
 
     public static final String ERR_UNEXPECTED = "Une erreur inattendue est survenue";

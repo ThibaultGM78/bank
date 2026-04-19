@@ -1,0 +1,88 @@
+<div class="dashboard-wrapper">
+  <div class="main-card">
+    <div class="search-header">
+      <label for="numInput">Saisir le Numero du compte:</label>
+      <div class="input-group">
+        <input 
+          #numCompte 
+          id="numInput"
+          type="text" 
+          placeholder="Ex: CC-BOB-002"
+          (keyup.enter)="rechercher(numCompte.value)"
+        >
+        <button class="action-btn search-btn" (click)="rechercher(numCompte.value)">
+          Chercher
+        </button>
+      </div>
+    </div>
+
+    <hr class="separator">
+
+    @if(compte() !== null){
+      <div class="dashboard-content">
+        
+        <div class="column-left">
+          <h2 class="title"> {{typeCompte()}} n°{{ compte()?.numeroCompte }}</h2>
+          
+          <div class="stats">
+            <p><strong>Solde:</strong> {{ compte()?.solde }} €</p>
+            @if (typeCompte() === Types.COURANT){
+              <p><strong>Decouvert:</strong> {{ compte()?.detailsCompteCourant?.montantDecouvert }} €</p>
+            }
+            @if (typeCompte() === Types.LIVRET){
+              <p><strong>Plafond:</strong> {{ compte()?.detailsLivret?.plafond }} €</p>
+            }          
+          </div>
+
+          <div class="button-group">
+            <input 
+              #montant 
+              type="number" 
+              class="montant-input" 
+              placeholder="0.00"
+              style="width: 80px; margin: 0 10px; padding: 5px; border-radius: 4px; border: 1px solid #ccc;"
+            >
+
+            <button 
+              class="action-btn" 
+              (click)="depot(montant.value); montant.value=''">
+              Depot
+            </button>
+            
+            <button 
+              class="action-btn" 
+              (click)="retrait(montant.value); montant.value=''">
+              Retrait
+            </button>
+          </div>
+          <div>
+            {{operationErreur()}}
+          </div>
+        </div>
+        <div class="vertical-line"></div>
+          <div class="column-right">
+          <h2 class="title">Relevé du compte (mois glissant)</h2>
+          
+          <div class="operations-list">
+            @for (op of operations(); track op.id) {
+              <div class="operation-card">
+                <div class="op-info">
+                  <span class="op-date">{{ op.date | date:'dd/MM/yyyy HH:mm' }}</span>
+                  <span class="op-libelle">{{ op.libelle }}</span>
+                </div>
+                
+                <div class="op-amount">
+                  {{ op.type === 'DEPOT' ? '+' : '-' }} {{ op.montant | number:'1.2-2' }} €
+                </div>
+              </div>
+            } @empty {
+              <div class="no-data">
+                <p>Aucune opération enregistrée pour ce compte.</p>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+</div>
