@@ -4,6 +4,7 @@ import { Observable, catchError, throwError } from 'rxjs';
 import { Compte } from '../../shared/models/compte.model';
 import { Operation } from '../../shared/models/operation.model';
 import { ErrorResponse } from '../../shared/models/error-response.model';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ import { ErrorResponse } from '../../shared/models/error-response.model';
 export class BankService {
   private http = inject(HttpClient);
   
-  private readonly API_URL = 'http://localhost:8081/bank';
+  private readonly API_URL = `${environment.apiUrl}`;
 
   getCompte(numeroCompte: string): Observable<Compte> {
     return this.http.get<Compte>(`${this.API_URL}/compte/${numeroCompte}`).pipe(
